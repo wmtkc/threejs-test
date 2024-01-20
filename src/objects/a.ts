@@ -1,13 +1,13 @@
 import * as THREE from "three"
-import {LitPlaceableMesh} from "./LitPlaceableMesh.ts";
+import {LitPlaceableMesh} from "./lit-placeable-mesh.ts";
 import {Euler, Scene} from "three";
 
 
 export class A extends LitPlaceableMesh {
-    readonly defaultCameraPositionEuler: Euler;
     constructor(
         scene: Scene
     ) {
+        const defaultCameraPosition = new Euler(0, 0, -30)
         const geometry = new THREE.TorusGeometry( 10, 3, 16, 100 )
         const material = new THREE.MeshStandardMaterial({ color: 0xa8a8a8 })
         const pointLightProps = {
@@ -22,6 +22,11 @@ export class A extends LitPlaceableMesh {
             material,
             pointLightProps
         });
+        this.defaultCameraPositionEuler = defaultCameraPosition
+    }
+
+    onClick () {
+        console.log("Clicked A")
     }
 
     animate () {

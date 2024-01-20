@@ -11,26 +11,28 @@ import {
 } from "three"
 
 type PointLightProps = {
-    relativePosition: Euler;
-    color?: ColorRepresentation;
+    relativePosition: Euler
+    color?: ColorRepresentation
     intensity?: number
-    distance?: number;
-    decay?: number;
-    setHelper?: boolean;
+    distance?: number
+    decay?: number
+    setHelper?: boolean
 }
 
 export class LitPlaceableMesh {
-    readonly mesh: Mesh;
-    readonly pointLight: PointLight;
-    readonly pointLightHelper: PointLightHelper;
+    readonly mesh: Mesh
+    readonly pointLight: PointLight
+    readonly pointLightHelper: PointLightHelper
+    readonly defaultCameraPositionEuler: Euler;
 
     constructor(args: {
         readonly scene: Scene,
         readonly geometry: BufferGeometry,
         readonly material: Material,
         readonly pointLightProps: PointLightProps
-        readonly position?: Euler;
-        readonly rotation?: Vector3;
+        readonly position?: Euler
+        readonly rotation?: Vector3
+        readonly callback?: () => void
     }) {
         const { scene , pointLightProps, position } = args;
 
@@ -38,11 +40,11 @@ export class LitPlaceableMesh {
         scene.add(this.mesh)
 
         if (args.position) {
-            this.mesh.position.setFromEuler(args.position);
+            this.mesh.position.setFromEuler(args.position)
         }
 
         if (args.rotation) {
-            this.mesh.rotation.setFromVector3(args.rotation);
+            this.mesh.rotation.setFromVector3(args.rotation)
         }
 
         this.pointLight = new PointLight(
@@ -65,4 +67,7 @@ export class LitPlaceableMesh {
             scene.add(this.pointLightHelper)
         }
     }
+
+    animate() {}
+    onClick() {}
 }
