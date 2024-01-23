@@ -1,12 +1,17 @@
-import { PopulatedScene } from "./populated-scene.ts"
+import { PopulatedScene, PopulatedSceneArgs } from "./populated-scene.ts"
 import { A } from "../objects/a.ts"
+import { B } from "../objects/b.ts"
 
 export class SceneOne extends PopulatedScene {
-  constructor() {
-    super({ ambientLightColor: 0xaabbcc })
+  constructor(args: PopulatedSceneArgs) {
+    super({ ...args, ambientLightColor: 0xaabbcc })
 
-    const a = new A(this.scene)
+    const a = new A(this)
     this.addPlacedObject(a)
-    this.currentlyViewing = a
+
+    const b = new B(this)
+    this.addPlacedObject(b)
+
+    this.viewObject(a)
   }
 }

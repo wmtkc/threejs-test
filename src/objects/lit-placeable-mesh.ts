@@ -6,9 +6,9 @@ import {
   Mesh,
   PointLight,
   PointLightHelper,
-  Scene,
   Vector3,
 } from "three"
+import { PopulatedScene } from "../scenes/populated-scene.ts"
 
 type PointLightProps = {
   relativePosition: Euler
@@ -21,12 +21,13 @@ type PointLightProps = {
 
 export class LitPlaceableMesh {
   readonly mesh: Mesh
+  readonly populatedScene: PopulatedScene
   readonly pointLight: PointLight
-  readonly pointLightHelper: PointLightHelper | undefined
-  public defaultCameraPositionEuler: Euler | undefined
+  readonly pointLightHelper?: PointLightHelper
+  public defaultRelativeCameraPositionEuler?: Euler
 
   constructor(args: {
-    readonly scene: Scene
+    readonly populatedScene: PopulatedScene
     readonly geometry: BufferGeometry
     readonly material: Material
     readonly pointLightProps: PointLightProps
@@ -34,10 +35,11 @@ export class LitPlaceableMesh {
     readonly rotation?: Vector3
     readonly callback?: () => void
   }) {
-    const { scene, pointLightProps } = args
+    const { pointLightProps } = args
+    this.populatedScene = args.populatedScene
 
     this.mesh = new Mesh(args.geometry, args.material)
-    scene.add(this.mesh)
+    this.populatedScene.scene.add(this.mesh)
 
     if (args.position) {
       this.mesh.position.setFromEuler(args.position)
@@ -60,11 +62,11 @@ export class LitPlaceableMesh {
     )
     this.pointLight.position.setFromEuler(absolutePointLightEuler)
 
-    scene.add(this.pointLight)
+    this.populatedScene.scene.add(this.pointLight)
 
     if (pointLightProps.setHelper) {
       this.pointLightHelper = new PointLightHelper(this.pointLight)
-      scene.add(this.pointLightHelper)
+      this.populatedScene.scene.add(this.pointLightHelper)
     }
   }
 
